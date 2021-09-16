@@ -41,6 +41,9 @@ jobs:
         run: |
           bash -c 'VIMCMD=nvim test/vader/run'
 
+      - name: Install ruby treesitter module
+        run: nvim --headless -Nu test/vader/minvimrc -c 'TSInstallSync ruby' -c 'q'
+
       - name: 'Run new tests'
         run: |
           cd ./test/new && make -j1 && make -j1 coverage

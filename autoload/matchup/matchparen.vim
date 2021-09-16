@@ -377,7 +377,8 @@ function! s:matchparen.highlight(...) abort dict " {{{1
   endif
 
   " prevent problems in visual block mode at the end of a line
-  if get(matchup#pos#get_cursor(), 4, 0) == 2147483647 && mode() ==? 'v'
+  if get(matchup#pos#get_cursor(), 4, 0) == 2147483647
+        \ && "v\<c-v>" =~? mode()
     return
   endif
 
@@ -670,8 +671,11 @@ function! s:do_offscreen_popup_nvim(offscreen) " {{{1
           \ 'height': &previewheight,
           \ 'focusable': v:false,
           \}
-    if get(g:matchup_matchparen_offscreen, 'border', 0)
-      let l:win_cfg.border = ['', '═' ,'╗', '║', '╝', '═', '', '']
+    let l:border = get(g:matchup_matchparen_offscreen, 'border', 0)
+    if !empty(l:border)
+      let l:win_cfg.border = has('nvim-0.5')
+            \ && type(l:border) == v:t_string
+            \ ? l:border : ['', '═' ,'╗', '║', '╝', '═', '', '']
       if l:lnum >= line('.')
         let l:win_cfg.row -= min([2, l:row - winline() - 1])
       endif

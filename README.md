@@ -640,13 +640,17 @@ enabled.
 
 In vim, `{count}%` goes to the `{count}` percentage in the file.
 match-up overrides this motion for small `{count}` (by default, anything
-less than 7).  To allow `{count}%` for `{count}` up to 11,
+less than 7).  To allow `{count}%` for `{count}` less than 12,
 ```vim
 g:matchup_motion_override_Npercent = 11
 ```
 To disable this feature, and restore vim's default `{count}%`,
 ```vim
 g:matchup_motion_override_Npercent = 0
+```
+To always enable this feature, use any value greater than 99,
+```vim
+g:matchup_motion_override_Npercent = 100
 ```
 default: 6
 
@@ -799,12 +803,17 @@ See for instance one of the following plugins for this;
 ### Matchit
 
 match-up tries to work around matchit.vim in all cases, but if
-you experience problems, read the following.
-matchit.vim should not be loaded.  If it is loaded, it should be loaded
-after match-up (in this case, matchit.vim will be disabled).  Note that
-some plugins, such as
-[vim-sensible](https://github.com/tpope/vim-sensible),
-load matchit.vim so these should also be initialized after match-up.
+you experience problems, read the following:
+
+- For vim, matchit.vim should not be loaded.  If it is loaded, it should
+  be loaded after match-up (in this case, matchit.vim will be disabled).
+  Note that some plugins, such as
+  [vim-sensible](https://github.com/tpope/vim-sensible), load matchit.vim
+  so these should also be initialized after match-up.
+
+- For neovim, matchit.vim is loaded by default.  This should not cause any
+  problems, but you may see a very slight start-up time improvement by
+  setting `let g:loaded_matchit = 1` in your `init.vim`.
 
 ### Matchparen emulation
 
